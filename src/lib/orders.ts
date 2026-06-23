@@ -10,6 +10,9 @@ export type OrderStatus =
 
 export const CANCELLABLE: OrderStatus[] = ["pending", "confirmed"];
 
+/** Customers may cancel only within this window after placing an order. */
+export const CANCEL_WINDOW_MS = 60 * 60 * 1000; // 1 hour
+
 export type OrderItem = {
   productId: string;
   name: string;
@@ -174,19 +177,31 @@ export async function getOrderByCode(code: string): Promise<Order | null> {
 
 export type CancelResult =
   | { ok: true; status: "cancelled" }
-  | { ok: false; reason: "not_found" | "not_cancellable"; status?: OrderStatus };
+  | {
+      ok: false;
+      reason: "not_found" | "not_cancellable" | "window_expired";
+      status?: OrderStatus;
+    };
 
-/** Cancels an order if it is still in a cancellable state. */
+/**
+ * Cancels an order if it is still cancellable AND placed within the last hour.
+ * The time check is done in SQL (database clock) so it can't be bypassed.
+ */
 export async function cancelOrder(code: string): Promise<CancelResult> {
-  const existing = await query<{ status: OrderStatus }>(
-    `SELECT status FROM orders WHERE code = $1`,
+  const existing = await query<{ status: OrderStatus; within: boolean }>(
+    `SELECT status,
+            (now() - created_at) <= interval '1 hour' AS within
+       FROM orders WHERE code = $1`,
     [code.toUpperCase()],
   );
   if (existing.length === 0) return { ok: false, reason: "not_found" };
 
-  const status = existing[0].status;
+  const { status, within } = existing[0];
   if (!CANCELLABLE.includes(status)) {
     return { ok: false, reason: "not_cancellable", status };
+  }
+  if (!within) {
+    return { ok: false, reason: "window_expired", status };
   }
 
   await query(

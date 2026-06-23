@@ -2,7 +2,12 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CancelOrderButton from "@/components/CancelOrderButton";
-import { getOrderByCode, CANCELLABLE, type OrderStatus } from "@/lib/orders";
+import {
+  getOrderByCode,
+  CANCELLABLE,
+  CANCEL_WINDOW_MS,
+  type OrderStatus,
+} from "@/lib/orders";
 import { formatPrice } from "@/lib/format";
 import { buildSavedOrderUrl } from "@/lib/whatsapp";
 
@@ -28,6 +33,10 @@ export default async function OrderPage({
   const { code } = await params;
   const { new: isNew } = await searchParams;
   const order = await getOrderByCode(code);
+
+  const cancelDeadline = order
+    ? new Date(order.createdAt).getTime() + CANCEL_WINDOW_MS
+    : 0;
 
   return (
     <>
@@ -182,7 +191,10 @@ export default async function OrderPage({
                     Confirm on WhatsApp
                   </a>
                   {CANCELLABLE.includes(order.status) && (
-                    <CancelOrderButton code={order.code} />
+                    <CancelOrderButton
+                      code={order.code}
+                      deadline={cancelDeadline}
+                    />
                   )}
                 </div>
               )}
