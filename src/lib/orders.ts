@@ -8,7 +8,9 @@ export type OrderStatus =
   | "delivered"
   | "cancelled";
 
-export const CANCELLABLE: OrderStatus[] = ["pending", "confirmed"];
+// Clients may cancel only while the order is still "pending". Once the admin
+// confirms it, online cancellation is closed (they must contact us).
+export const CANCELLABLE: OrderStatus[] = ["pending"];
 
 /** Customers may cancel only within this window after placing an order. */
 export const CANCEL_WINDOW_MS = 60 * 60 * 1000; // 1 hour

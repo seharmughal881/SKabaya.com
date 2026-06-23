@@ -198,6 +198,12 @@ export default async function OrderPage({
                   )}
                 </div>
               )}
+              {order.status !== "pending" && order.status !== "cancelled" && (
+                <p className="font-label max-w-md text-[11px] uppercase leading-relaxed tracking-[0.15em] text-muted">
+                  Your order is {order.status} and can no longer be cancelled
+                  online. To make changes, please contact us on WhatsApp.
+                </p>
+              )}
               <Link
                 href="/#best-sellers"
                 className="font-label text-[11px] uppercase tracking-[0.25em] text-muted transition-colors hover:text-gold"

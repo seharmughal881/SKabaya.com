@@ -89,6 +89,39 @@ export function buildSavedOrderUrl(order: Order): string {
   return waUrl(message);
 }
 
+/** Normalises a Pakistani phone number to wa.me international format (92…). */
+export function normalizePhone(raw: string): string {
+  let d = raw.replace(/\D/g, "");
+  if (d.startsWith("0092")) d = d.slice(2);
+  if (d.startsWith("92")) return d;
+  if (d.startsWith("0")) return "92" + d.slice(1);
+  if (d.startsWith("3")) return "92" + d; // e.g. 3004031131
+  return d;
+}
+
+/**
+ * Link the ADMIN clicks to message the CLIENT's number, confirming their order
+ * and the delivery estimate. (wa.me opens WhatsApp with the text pre-filled.)
+ */
+export function buildClientConfirmUrl(o: {
+  code: string;
+  customerName: string;
+  phone: string;
+  deliveryDays?: string;
+}): string {
+  const days = o.deliveryDays ?? "3–5 working days";
+  const message = [
+    `Assalam o Alaikum ${o.customerName},`,
+    "",
+    `Your SK Abaya order *${o.code}* has been *confirmed* ✅`,
+    "",
+    `In sha Allah it will reach you within ${days}.`,
+    "",
+    "Thank you for shopping with SK Abaya. 🖤",
+  ].join("\n");
+  return `https://wa.me/${normalizePhone(o.phone)}?text=${encodeURIComponent(message)}`;
+}
+
 /** Message asking to cancel a specific saved order. */
 export function buildCancelUrl(code: string): string {
   return waUrl(`*Cancel Order — SK Abaya*\n\nPlease cancel my order *${code}*.`);
