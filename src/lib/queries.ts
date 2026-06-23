@@ -38,6 +38,15 @@ export async function getBestSellers(): Promise<Product[]> {
   return rows.map(mapProduct);
 }
 
+/** A set of products for the shoppable feed (newest/curated first). */
+export async function getShowcaseProducts(limit = 6): Promise<Product[]> {
+  const rows = await query(
+    `SELECT ${PRODUCT_COLS} FROM products ORDER BY sort_order, id LIMIT $1`,
+    [limit],
+  );
+  return rows.map(mapProduct);
+}
+
 export async function getProduct(id: string): Promise<Product | null> {
   const rows = await query(
     `SELECT ${PRODUCT_COLS} FROM products WHERE id = $1`,
