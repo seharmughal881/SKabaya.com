@@ -13,7 +13,14 @@ import { collections, bestSellers, testimonials } from "../src/lib/data";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 async function main() {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const connectionString = process.env.DATABASE_URL;
+  const isLocal =
+    !connectionString || /localhost|127\.0\.0\.1/.test(connectionString);
+  const pool = new Pool({
+    connectionString,
+    // Cloud Postgres (Neon/Supabase/RDS) needs SSL; local dev does not.
+    ssl: isLocal ? undefined : { rejectUnauthorized: false },
+  });
 
   console.log("→ Applying schema…");
   const schema = readFileSync(join(__dirname, "schema.sql"), "utf8");
