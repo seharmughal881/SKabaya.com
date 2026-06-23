@@ -36,6 +36,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local postgres instance (dev only)
+/.pgdata/
+/.pgsock/
+
+# admin-uploaded images (served via the /media route)
+/uploads/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { navLinks, currencies, languages } from "@/lib/data";
+import { useCart } from "@/lib/cart";
 
 export default function Header() {
+  const { count, openCart } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -62,14 +65,14 @@ export default function Header() {
           </button>
 
           {/* Center — logo */}
-          <a href="#top" className="flex flex-col items-center text-center">
+          <Link href="/" className="flex flex-col items-center text-center">
             <span className="font-display text-2xl leading-none tracking-[0.2em] text-ivory md:text-3xl">
               SK<span className="text-gilded"> ABAYA</span>
             </span>
             <span className="font-label mt-1 text-[8px] uppercase tracking-[0.5em] text-gold/70">
               Elegance in Modesty
             </span>
-          </a>
+          </Link>
 
           {/* Right — actions */}
           <div className="flex flex-1 items-center justify-end gap-5">
@@ -114,7 +117,8 @@ export default function Header() {
             </button>
 
             <button
-              aria-label="Cart"
+              aria-label="Open bag"
+              onClick={openCart}
               className="relative text-ivory/80 transition-colors hover:text-gold"
             >
               <svg
@@ -124,9 +128,11 @@ export default function Header() {
               >
                 <path d="M6 7h12l-1 14H7L6 7zM9 7a3 3 0 016 0" />
               </svg>
-              <span className="font-label absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-gold text-[9px] text-ink">
-                0
-              </span>
+              {count > 0 && (
+                <span className="font-label absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-gold text-[9px] text-ink">
+                  {count}
+                </span>
+              )}
             </button>
           </div>
         </div>

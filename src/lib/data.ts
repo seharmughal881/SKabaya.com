@@ -109,6 +109,49 @@ export const bestSellers: Product[] = [
     reviews: 137,
     image: img("1485968579580-b6d095142e6e", 900),
   },
+  {
+    id: "huda-everyday",
+    name: "Huda Everyday Drape",
+    collection: "Everyday",
+    price: 320,
+    currency: "USD",
+    rating: 5,
+    reviews: 248,
+    badge: "New",
+    image: img("1487222477894-8943e31ef7b2", 900),
+  },
+  {
+    id: "yasmin-signature",
+    name: "Yasmin Signature Satin",
+    collection: "Signature",
+    price: 740,
+    currency: "USD",
+    rating: 5,
+    reviews: 121,
+    image: img("1490481651871-ab68de25d43d", 900),
+  },
+  {
+    id: "amira-limited",
+    name: "Amira Limited Edition",
+    collection: "Limited",
+    price: 980,
+    currency: "USD",
+    rating: 5,
+    reviews: 64,
+    badge: "Limited",
+    image: img("1539109136881-3be0616acf4b", 900),
+  },
+  {
+    id: "sana-bridal",
+    name: "Sana Bridal Couture",
+    collection: "Bridal",
+    price: 1480,
+    currency: "USD",
+    rating: 5,
+    reviews: 73,
+    badge: "Bestseller",
+    image: img("1515372039744-b8f02a3ae446", 900),
+  },
 ];
 
 export type Pillar = {
@@ -199,11 +242,11 @@ export const instagram: string[] = [
 ];
 
 export const navLinks = [
-  { label: "Collections", href: "#collections" },
-  { label: "Best Sellers", href: "#best-sellers" },
-  { label: "The House", href: "#experience" },
-  { label: "Journal", href: "#instagram" },
-  { label: "Contact", href: "#newsletter" },
+  { label: "Collections", href: "/#collections" },
+  { label: "Best Sellers", href: "/#best-sellers" },
+  { label: "The House", href: "/#experience" },
+  { label: "Track Order", href: "/order" },
+  { label: "Contact", href: "/#newsletter" },
 ];
 
 export const currencies = ["USD", "AED", "SAR", "PKR", "GBP"] as const;

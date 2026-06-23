@@ -1,8 +1,10 @@
-import { bestSellers } from "@/lib/data";
+import { getBestSellers } from "@/lib/queries";
 import ProductCard from "./ProductCard";
 import Reveal from "./Reveal";
 
-export default function BestSellers() {
+export default async function BestSellers() {
+  const bestSellers = await getBestSellers();
+
   return (
     <section id="best-sellers" className="section section-wide py-24 md:py-32">
       <Reveal className="flex flex-col items-end justify-between gap-6 sm:flex-row sm:items-end">

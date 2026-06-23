@@ -1,15 +1,35 @@
+import Link from "next/link";
+
 const footerNav = [
   {
     title: "Shop",
-    links: ["Luxury Abayas", "Signature", "Eid Collection", "Bridal", "Limited Edition"],
+    links: [
+      { label: "Luxury Abayas", href: "/#collections" },
+      { label: "Signature", href: "/#collections" },
+      { label: "Best Sellers", href: "/#best-sellers" },
+      { label: "Bridal", href: "/#collections" },
+      { label: "Limited Edition", href: "/#collections" },
+    ],
   },
   {
     title: "The House",
-    links: ["Our Story", "Craftsmanship", "Custom Tailoring", "Boutiques", "Journal"],
+    links: [
+      { label: "Our Story", href: "/info/our-story" },
+      { label: "Craftsmanship", href: "/info/craftsmanship" },
+      { label: "Custom Tailoring", href: "/info/custom-tailoring" },
+      { label: "Boutiques", href: "/info/boutiques" },
+      { label: "Journal", href: "/#instagram" },
+    ],
   },
   {
     title: "Client Care",
-    links: ["Shipping & Returns", "Size Guide", "Track Order", "FAQ", "Contact Us"],
+    links: [
+      { label: "Shipping & Returns", href: "/info/shipping-returns" },
+      { label: "Size Guide", href: "/info/size-guide" },
+      { label: "Track Order", href: "/order" },
+      { label: "FAQ", href: "/info/faq" },
+      { label: "Contact Us", href: "/info/contact" },
+    ],
   },
 ];
 
@@ -52,12 +72,12 @@ export default function Footer() {
                 </h3>
                 <ul className="mt-5 space-y-3">
                   {col.links.map((l) => (
-                    <li key={l}>
+                    <li key={l.label}>
                       <a
-                        href="#"
+                        href={l.href}
                         className="text-sm text-muted transition-colors hover:text-ivory"
                       >
-                        {l}
+                        {l.label}
                       </a>
                     </li>
                   ))}
@@ -75,12 +95,15 @@ export default function Footer() {
           </p>
           <div className="font-label flex flex-wrap items-center justify-center gap-6 text-[10px] uppercase tracking-[0.25em] text-muted">
             <span>Pakistan · UAE · KSA · UK · Worldwide</span>
-            <a href="#" className="transition-colors hover:text-gold">
+            <Link href="/info/privacy" className="transition-colors hover:text-gold">
               Privacy
-            </a>
-            <a href="#" className="transition-colors hover:text-gold">
+            </Link>
+            <Link href="/info/terms" className="transition-colors hover:text-gold">
               Terms
-            </a>
+            </Link>
+            <Link href="/admin" className="transition-colors hover:text-gold">
+              Admin
+            </Link>
           </div>
         </div>
       </div>

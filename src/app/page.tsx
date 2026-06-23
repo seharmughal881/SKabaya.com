@@ -9,6 +9,9 @@ import InstagramGallery from "@/components/InstagramGallery";
 import Newsletter from "@/components/Newsletter";
 import Footer from "@/components/Footer";
 
+// Always render against live database content.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <>

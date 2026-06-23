@@ -1,8 +1,10 @@
 import Image from "next/image";
-import { collections } from "@/lib/data";
+import { getCollections } from "@/lib/queries";
 import Reveal from "./Reveal";
 
-export default function FeaturedCollections() {
+export default async function FeaturedCollections() {
+  const collections = await getCollections();
+
   return (
     <section id="collections" className="section section-wide py-24 md:py-32">
       <Reveal className="text-center">

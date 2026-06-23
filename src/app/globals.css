@@ -171,6 +171,12 @@
     @apply border-gold bg-gold/10 text-gold;
   }
 
+  /* Form input */
+  .input {
+    font-family: var(--font-sans);
+    @apply w-full border border-line bg-ink/40 px-4 py-3 text-sm text-ivory transition-colors placeholder:text-muted/60 focus:border-gold focus:outline-none;
+  }
+
   /* Reveal-on-scroll base */
   .reveal {
     opacity: 0;

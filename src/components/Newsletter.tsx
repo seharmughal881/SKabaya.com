@@ -6,6 +6,33 @@ import Reveal from "./Reveal";
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+      } else {
+        setMessage(data.message);
+        setDone(true);
+      }
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <section
@@ -34,14 +61,11 @@ export default function Newsletter() {
 
         {done ? (
           <p className="font-serif mt-12 text-xl italic text-gold">
-            Welcome to the house. Your invitation is on its way.
+            {message || "Welcome to the house. Your invitation is on its way."}
           </p>
         ) : (
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (email.includes("@")) setDone(true);
-            }}
+            onSubmit={handleSubmit}
             className="mx-auto mt-12 flex max-w-md flex-col gap-3 sm:flex-row"
           >
             <input
@@ -52,10 +76,19 @@ export default function Newsletter() {
               placeholder="Your email address"
               className="font-label flex-1 border border-line bg-ink/40 px-5 py-4 text-sm tracking-wide text-ivory placeholder:text-muted/70 focus:border-gold focus:outline-none"
             />
-            <button type="submit" className="btn-gold whitespace-nowrap">
-              Subscribe
+            <button
+              type="submit"
+              disabled={submitting}
+              className="btn-gold whitespace-nowrap disabled:opacity-60"
+            >
+              {submitting ? "Joining…" : "Subscribe"}
             </button>
           </form>
+        )}
+        {error && (
+          <p className="font-label mt-4 text-xs uppercase tracking-[0.2em] text-red-400">
+            {error}
+          </p>
         )}
         <p className="font-label mt-5 text-[10px] uppercase tracking-[0.25em] text-muted">
           No spam — only elegance. Unsubscribe anytime.

@@ -6,6 +6,9 @@ import {
   Poppins,
 } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/lib/cart";
+import CartDrawer from "@/components/CartDrawer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 const playfair = Playfair_Display({
   variable: "--font-display",
@@ -76,8 +79,15 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${cormorant.variable} ${inter.variable} ${poppins.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-ink text-ivory">
-        {children}
+      <body
+        suppressHydrationWarning
+        className="min-h-full flex flex-col bg-ink text-ivory"
+      >
+        <CartProvider>
+          {children}
+          <CartDrawer />
+          <FloatingWhatsApp />
+        </CartProvider>
       </body>
     </html>
   );
