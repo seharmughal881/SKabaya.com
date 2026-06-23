@@ -6,12 +6,22 @@ import { Pool, type PoolClient } from "pg";
  */
 const globalForDb = globalThis as unknown as { pgPool?: Pool };
 
+const connectionString = process.env.DATABASE_URL;
+
+// Managed/cloud Postgres (Neon, Supabase, RDS…) requires SSL. Local dev does not.
+const isLocal =
+  !connectionString || /localhost|127\.0\.0\.1/.test(connectionString);
+const useSsl =
+  /sslmode=require/i.test(connectionString ?? "") ||
+  (process.env.NODE_ENV === "production" && !isLocal);
+
 export const pool =
   globalForDb.pgPool ??
   new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString,
     max: 10,
     idleTimeoutMillis: 30_000,
+    ssl: useSsl ? { rejectUnauthorized: false } : undefined,
   });
 
 if (process.env.NODE_ENV !== "production") globalForDb.pgPool = pool;
