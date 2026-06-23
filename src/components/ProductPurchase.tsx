@@ -91,7 +91,7 @@ export default function ProductPurchase({ product }: { product: Product }) {
           Add to Bag
         </button>
         <a
-          href={buildSingleOrderUrl(product.name, product.collection)}
+          href={buildSingleOrderUrl(product.name, product.collection, product.image)}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-ghost flex-1"

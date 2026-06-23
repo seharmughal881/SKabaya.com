@@ -16,6 +16,7 @@ export type OrderItem = {
   collection: string;
   price: number;
   qty: number;
+  image: string;
 };
 
 export type Order = {
@@ -55,7 +56,7 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
 
   return withTransaction(async (client) => {
     const { rows: products } = await client.query(
-      `SELECT id, name, collection, price, currency
+      `SELECT id, name, collection, price, currency, image
          FROM products
         WHERE id = ANY($1::text[])`,
       [ids],
@@ -71,6 +72,7 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
       collection: String(p.collection),
       price: Number(p.price),
       qty: qtyById.get(String(p.id)) ?? 1,
+      image: String(p.image),
     }));
 
     const currency = String(products[0].currency ?? "USD");
@@ -110,9 +112,9 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
 
     for (const it of items) {
       await client.query(
-        `INSERT INTO order_items (order_id, product_id, name, collection, price, qty)
-         VALUES ($1,$2,$3,$4,$5,$6)`,
-        [orderId, it.productId, it.name, it.collection, it.price, it.qty],
+        `INSERT INTO order_items (order_id, product_id, name, collection, price, qty, image)
+         VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+        [orderId, it.productId, it.name, it.collection, it.price, it.qty, it.image],
       );
     }
 
@@ -142,7 +144,7 @@ export async function getOrderByCode(code: string): Promise<Order | null> {
   const o = orders[0];
 
   const items = await query(
-    `SELECT product_id, name, collection, price, qty
+    `SELECT product_id, name, collection, price, qty, image
        FROM order_items WHERE order_id = (SELECT id FROM orders WHERE code = $1)
       ORDER BY id`,
     [code.toUpperCase()],
@@ -165,6 +167,7 @@ export async function getOrderByCode(code: string): Promise<Order | null> {
       collection: String(i.collection),
       price: Number(i.price),
       qty: Number(i.qty),
+      image: i.image ? String(i.image) : "",
     })),
   };
 }

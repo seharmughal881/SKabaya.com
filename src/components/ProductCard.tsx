@@ -78,7 +78,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </svg>
           </button>
           <a
-            href={buildSingleOrderUrl(product.name, product.collection)}
+            href={buildSingleOrderUrl(product.name, product.collection, product.image)}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Order on WhatsApp"

@@ -70,7 +70,8 @@ CREATE TABLE IF NOT EXISTS order_items (
   name        TEXT NOT NULL,
   collection  TEXT NOT NULL,
   price       NUMERIC(10,2) NOT NULL,
-  qty         INTEGER NOT NULL CHECK (qty > 0)
+  qty         INTEGER NOT NULL CHECK (qty > 0),
+  image       TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items (order_id);
