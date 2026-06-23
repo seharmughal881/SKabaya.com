@@ -1,26 +1,222 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   SK Abaya — Luxury Design System
+   Deep matte black · Royal gold · Soft ivory · Pearl white
+   ============================================================ */
+
+@theme {
+  /* — Core palette — */
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #111110;
+  --color-ink-raised: #16140f;
+  --color-charcoal: #1c1a16;
+  --color-gold: #d4af37;
+  --color-gold-bright: #e8c766;
+  --color-gold-deep: #a8842a;
+  --color-ivory: #f8f5f0;
+  --color-pearl: #ffffff;
+  --color-muted: #a39e93;
+  --color-line: rgba(212, 175, 55, 0.18);
+
+  /* — Typography — */
+  --font-display: var(--font-display), "Times New Roman", serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+  --font-sans: var(--font-sans), system-ui, sans-serif;
+  --font-label: var(--font-label), system-ui, sans-serif;
+
+  /* — Motion — */
+  --ease-luxe: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* — Keyframes — */
+  --animate-shimmer: shimmer 6s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-ink);
+    color: var(--color-ivory);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  /* Custom luxury scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--color-gold-deep), var(--color-gold));
+    border-radius: 99px;
+  }
+}
+
+@layer components {
+  /* Section rhythm */
+  .section {
+    @apply px-6 md:px-10 lg:px-16 xl:px-24;
+  }
+  .section-wide {
+    @apply mx-auto max-w-[1500px];
+  }
+
+  /* Editorial eyebrow label */
+  .eyebrow {
+    font-family: var(--font-label);
+    @apply text-xs uppercase tracking-[0.4em] text-gold;
+  }
+
+  /* Gold gradient text */
+  .text-gilded {
+    background: linear-gradient(
+      100deg,
+      var(--color-gold-deep),
+      var(--color-gold-bright) 40%,
+      var(--color-pearl) 50%,
+      var(--color-gold-bright) 60%,
+      var(--color-gold-deep)
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: var(--animate-shimmer);
+  }
+
+  /* Hairline divider */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-gold) 50%,
+      transparent
+    );
+  }
+
+  /* Glassmorphism surface */
+  .glass {
+    background: rgba(20, 18, 14, 0.55);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--color-line);
+  }
+
+  /* Primary luxury button */
+  .btn-gold {
+    font-family: var(--font-label);
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden px-9 py-4 text-xs font-medium uppercase tracking-[0.25em] text-ink transition-all duration-500;
+    background: linear-gradient(
+      120deg,
+      var(--color-gold-deep),
+      var(--color-gold-bright),
+      var(--color-gold-deep)
+    );
+    background-size: 200% auto;
+  }
+  .btn-gold:hover {
+    background-position: right center;
+    box-shadow: 0 12px 40px -12px rgba(212, 175, 55, 0.6);
+  }
+
+  /* Ghost / outline button */
+  .btn-ghost {
+    font-family: var(--font-label);
+    @apply relative inline-flex items-center justify-center gap-2 border border-gold/40 px-9 py-4 text-xs font-medium uppercase tracking-[0.25em] text-ivory transition-all duration-500;
+  }
+  .btn-ghost:hover {
+    @apply border-gold bg-gold/10 text-gold;
+  }
+
+  /* Reveal-on-scroll base */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 1s var(--ease-luxe),
+      transform 1s var(--ease-luxe);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+  .font-label {
+    font-family: var(--font-label);
+  }
+
+  /* subtle noise / grain overlay helper */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
