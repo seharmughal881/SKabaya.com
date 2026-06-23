@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS products (
   reviews       INTEGER NOT NULL DEFAULT 0,
   badge         TEXT,
   image         TEXT NOT NULL,
+  description   TEXT,
+  fabric        TEXT,
   is_best_seller BOOLEAN NOT NULL DEFAULT false,
   sort_order    INTEGER NOT NULL DEFAULT 0,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()

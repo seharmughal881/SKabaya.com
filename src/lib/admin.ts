@@ -35,19 +35,22 @@ export type NewProduct = {
   reviews: number;
   badge?: string;
   image: string;
+  description?: string;
+  fabric?: string;
   isBestSeller: boolean;
 };
 
 export async function createProduct(p: NewProduct): Promise<void> {
   await query(
     `INSERT INTO products
-       (id, name, collection, price, currency, rating, reviews, badge, image, is_best_seller, sort_order)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,
+       (id, name, collection, price, currency, rating, reviews, badge, image, description, fabric, is_best_seller, sort_order)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,
              COALESCE((SELECT MAX(sort_order)+1 FROM products), 0))
      ON CONFLICT (id) DO UPDATE SET
        name=EXCLUDED.name, collection=EXCLUDED.collection, price=EXCLUDED.price,
        currency=EXCLUDED.currency, rating=EXCLUDED.rating, reviews=EXCLUDED.reviews,
-       badge=EXCLUDED.badge, image=EXCLUDED.image, is_best_seller=EXCLUDED.is_best_seller`,
+       badge=EXCLUDED.badge, image=EXCLUDED.image, description=EXCLUDED.description,
+       fabric=EXCLUDED.fabric, is_best_seller=EXCLUDED.is_best_seller`,
     [
       p.id,
       p.name,
@@ -58,6 +61,8 @@ export async function createProduct(p: NewProduct): Promise<void> {
       p.reviews,
       p.badge ?? null,
       p.image,
+      p.description ?? null,
+      p.fabric ?? null,
       p.isBestSeller,
     ],
   );

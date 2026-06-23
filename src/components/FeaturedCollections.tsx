@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getCollections } from "@/lib/queries";
 import Reveal from "./Reveal";
 
@@ -24,6 +25,11 @@ export default async function FeaturedCollections() {
             as="article"
             className="group relative aspect-[4/5] overflow-hidden bg-gradient-to-b from-charcoal to-ink"
           >
+            <Link
+              href={`/collection/${c.slug}`}
+              aria-label={c.name}
+              className="absolute inset-0 z-10"
+            />
             <Image
               src={c.image}
               alt={c.name}

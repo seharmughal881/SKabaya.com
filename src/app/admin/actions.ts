@@ -85,6 +85,8 @@ export async function addProduct(formData: FormData) {
     reviews: Number(formData.get("reviews") ?? 0),
     badge: String(formData.get("badge") ?? "").trim() || undefined,
     image,
+    description: String(formData.get("description") ?? "").trim() || undefined,
+    fabric: String(formData.get("fabric") ?? "").trim() || undefined,
     isBestSeller: formData.get("isBestSeller") === "on",
   });
   revalidatePath("/admin/products");

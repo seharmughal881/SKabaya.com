@@ -37,8 +37,8 @@ async function main() {
   for (const [i, p] of bestSellers.entries()) {
     await pool.query(
       `INSERT INTO products
-         (id, name, collection, price, currency, rating, reviews, badge, image, is_best_seller, sort_order)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,true,$10)
+         (id, name, collection, price, currency, rating, reviews, badge, image, description, fabric, is_best_seller, sort_order)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12)
        ON CONFLICT (id) DO UPDATE
          SET name = EXCLUDED.name,
              collection = EXCLUDED.collection,
@@ -48,6 +48,8 @@ async function main() {
              reviews = EXCLUDED.reviews,
              badge = EXCLUDED.badge,
              image = EXCLUDED.image,
+             description = EXCLUDED.description,
+             fabric = EXCLUDED.fabric,
              is_best_seller = true,
              sort_order = EXCLUDED.sort_order`,
       [
@@ -60,6 +62,8 @@ async function main() {
         p.reviews,
         p.badge ?? null,
         p.image,
+        p.description ?? null,
+        p.fabric ?? null,
         i,
       ],
     );

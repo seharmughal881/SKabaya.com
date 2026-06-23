@@ -51,6 +51,20 @@ export default async function AdminProducts() {
         <L label="Badge (optional)">
           <input name="badge" className="input" placeholder="Best Seller / New / Limited" />
         </L>
+        <L label="Fabric (optional)">
+          <input name="fabric" className="input" placeholder="Premium Japanese Nida" />
+        </L>
+        <label className="block sm:col-span-2 lg:col-span-3">
+          <span className="font-label text-[10px] uppercase tracking-[0.25em] text-muted">
+            Description (optional)
+          </span>
+          <textarea
+            name="description"
+            rows={3}
+            className="input mt-2 resize-y"
+            placeholder="A fluid, floor-skimming silhouette in matte black Nida…"
+          />
+        </label>
         <L label="Rating (0-5)">
           <input name="rating" type="number" min="0" max="5" className="input" defaultValue={5} />
         </L>

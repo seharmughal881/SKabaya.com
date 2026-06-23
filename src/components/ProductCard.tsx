@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { Product } from "@/lib/data";
 import { useCart } from "@/lib/cart";
@@ -44,14 +45,16 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group relative">
       <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-b from-charcoal to-ink">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+        <Link href={`/product/${product.id}`} aria-label={product.name}>
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, 25vw"
+            className="object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
+        </Link>
 
         {product.badge && (
           <span className="font-label absolute left-4 top-4 bg-ink/70 px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-gold backdrop-blur">
@@ -102,7 +105,14 @@ export default function ProductCard({ product }: { product: Product }) {
         <p className="font-label text-[10px] uppercase tracking-[0.3em] text-gold/80">
           {product.collection}
         </p>
-        <h3 className="font-display text-lg text-ivory">{product.name}</h3>
+        <h3 className="font-display text-lg text-ivory">
+          <Link
+            href={`/product/${product.id}`}
+            className="transition-colors hover:text-gold"
+          >
+            {product.name}
+          </Link>
+        </h3>
         <div className="flex items-center justify-between pt-1">
           <p className="font-serif text-lg text-ivory">
             {formatPrice(product.price, product.currency)}
